@@ -13,7 +13,7 @@ It enables users to upload PDFs and interact with them through natural language 
 
 ## 🧠 Architecture
 
-# Diagram
+# Diagram :-
 <img src="ArchitectureDiagram.png">
 
 The system follows a modular architecture:
