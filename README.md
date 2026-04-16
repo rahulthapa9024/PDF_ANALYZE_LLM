@@ -1,79 +1,199 @@
-# PDF_ANALYZE_LLM
+# 📄 PDF_ANALYZE_LLM
 
-## Project Overview
+## 🚀 Overview
 
-PDF_ANALYZE_LLM is a comprehensive solution designed for analyzing PDF documents using advanced machine learning techniques, particularly aimed at leveraging the Retrieval-Augmented Generation (RAG) architecture. The system consists of both frontend and backend modules that work seamlessly to provide an intuitive user experience while effectively processing and analyzing PDF files.
+**PDF_ANALYZE_LLM** is a full-stack application designed to analyze PDF documents using **Retrieval-Augmented Generation (RAG)**.
+It enables users to upload PDFs and interact with them through natural language queries, combining **semantic search** and **LLM-based generation** for accurate, context-aware responses.
 
-## Architecture Diagram Explanation
+---
+## Interface
 
-The architecture of PDF_ANALYZE_LLM consists of several interrelated components:
+<img src="./1.png">
+<img src="./2.png">
 
-- **Frontend**: A user-friendly interface allowing users to upload PDF files, view analyses, and access documentation.
-- **Backend**: The server-side module handles data processing, including PDF extraction and machine learning inference.
-- **RAG Architecture**: Combines retrieval and generation capabilities for enhanced document understanding.
-- **VectorDB**: A vector database that stores embeddings for efficient querying and retrieval of information.
+## 🧠 Architecture
 
-## Module Descriptions
+# Diagram
+<img src="ArchitectureDiagram.png">
 
-### Frontend Module
-- **Technology Stack**: [React.js, Bootstrap]
-- **Functionality**: Enables users to upload files and view results. Provides a comprehensive dashboard for user interactions and displays analytics results.
-- **Key Components**: Upload Form, Results Display, Analytics Dashboard.
+The system follows a modular architecture:
 
-### Backend Module
-- **Technology Stack**: [Node.js, Express, Python]
-- **Functionality**: Processes uploaded PDFs, extracts text, handles machine learning models, and interfaces with the VectorDB.
-- **Key Components**: PDF Handler, Machine Learning Model Manager, API Endpoints.
+* **Frontend** – Interactive UI for uploading PDFs and querying results
+* **Backend** – Handles PDF processing, embeddings, and LLM inference
+* **RAG Pipeline** – Combines retrieval + generation for accurate answers
+* **Vector Database (FAISS)** – Stores embeddings for fast similarity search
 
-## RAG Pipeline Explanation
+---
 
-The RAG pipeline is central to the functionality of our application. It consists of two main processes:
-1. **Retrieval**: Retrieves relevant information from the VectorDB using embeddings for the uploaded PDF content.
-2. **Generation**: Utilizes the retrieved information to generate answers or insights relevant to user queries.
+## 🧩 Modules
 
-## VectorDB Implementation
+### 🎨 Frontend
 
-The VectorDB is built on [Pinecone/Weaviate/FAISS] for efficient retrieval of document embeddings. It allows the application to handle large datasets and provide quick responses to user queries based on the embeddings of the PDFs processed.
+* **Tech Stack**: React, Vite, Axios
+* **Features**:
 
-## Setup Instructions
+  * Upload PDF documents
+  * Ask questions about uploaded files
+  * View results in a clean dashboard
 
-To set up the project locally, follow these steps:
-1. Clone the repository:  
-   ```env
-   git clone https://github.com/rahulthapa9024/PDF_ANALYZE_LLM.git
-   ```
-   
-3. Navigate to the project directory:  
-   ```env
-   cd PDF_ANALYZE_LLM
-   ```
-5. Install dependencies for both frontend and backend:
-   - Frontend:  
-     ```env
-     cd frontend
-     ```
-     ```env
-     npm install
-     ```
-   - Backend:  
-     ```env
-     cd backend
-     ```
-     ```env
-     
-     ```
-6. Start the services:
-   - Frontend:  
-     `npm start`
-   - Backend:  
-     `node server.js` (or similar command)
-7. Open your browser and go to `http://localhost:3000` to access the frontend interface.
+---
 
-## API Documentation
+### ⚙️ Backend
 
-The backend offers a RESTful API with the following endpoints:
-- `POST /api/upload` - Uploads a PDF for processing.
-- `GET /api/results/:id` - Retrieves analysis results by ID.
-- `GET /api/status` - Checks the status of the backend service.
+* **Tech Stack**: FastAPI, FAISS, SentenceTransformers
+* **Responsibilities**:
 
-Refer to the individual endpoint documentation for detailed descriptions of request and response formats.
+  * PDF text extraction
+  * Chunking & embedding
+  * Vector search & reranking
+  * LLM response generation
+
+---
+
+## 🔍 RAG Pipeline
+
+The system uses a **Retrieval-Augmented Generation pipeline**:
+
+### 1. Retrieval
+
+* Text is split into chunks
+* Embeddings generated using `BAAI/bge-small-en-v1.5`
+* Stored in FAISS
+* Relevant chunks retrieved via cosine similarity
+* Re-ranked using CrossEncoder
+
+### 2. Generation
+
+* Top relevant chunks passed to LLM
+* LLM generates accurate answers grounded in document context
+
+---
+
+## 🗄️ Vector Database
+
+* Built using **FAISS**
+* Uses **Inner Product similarity** (cosine with normalized embeddings)
+* Supports fast semantic search across large documents
+
+---
+
+## 🤖 LLM Used
+
+### `llama3.1:8b-instruct`
+
+* Developed by Meta AI
+* 8 billion parameters
+* Optimized for instruction-following tasks
+* Runs locally via Ollama
+
+✅ Suitable for:
+
+* RAG applications
+* Document Q&A
+* Local deployment
+
+---
+
+## 💻 Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/rahulthapa9024/PDF_ANALYZE_LLM.git
+cd PDF_ANALYZE_LLM
+```
+
+---
+
+### 2. Install Dependencies
+
+#### Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+#### Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+---
+
+### 3. Install and Run Ollama
+
+Download Ollama:
+👉 https://ollama.com/
+
+Check installed models:
+
+```bash
+ollama list
+```
+
+Download model:
+
+```bash
+ollama pull llama3.1:8b
+```
+
+---
+
+### 4. Start Services
+
+#### Backend
+
+```bash
+uvicorn main:app --port 8000
+```
+
+#### Frontend
+
+```bash
+npm run dev
+```
+
+---
+
+### 5. Open Application
+
+👉 http://localhost:5173/
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint               | Description             |
+| ------ | ---------------------- | ----------------------- |
+| POST   | `/upload-pdf/`         | Upload PDF              |
+| GET    | `/pdf-status/{job_id}` | Check processing status |
+| POST   | `/chat/`               | Ask questions about PDF |
+
+---
+
+## ⚡ Features
+
+* 📄 PDF ingestion & processing
+* 🔍 Semantic search with FAISS
+* 🧠 Context-aware Q&A using RAG
+* ⚡ Fast retrieval with reranking
+* 💻 Fully local LLM support
+
+---
+
+## 🧠 Future Improvements
+
+* Add citations (page numbers)
+* Highlight relevant text in PDF
+* Hybrid search (BM25 + semantic)
+* Streaming responses
+* Multi-document support
+
+---
+
+## 👨‍💻 Author
+
+**Rahul Thapa**
